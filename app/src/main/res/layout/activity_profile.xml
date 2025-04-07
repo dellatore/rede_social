@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+
+
+
+    <Button
+        android:id="@+id/alterarFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alterar Foto"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/nomeUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome de Usuario(publico)"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"/>
+
+    <EditText
+        android:id="@+id/nomeCompletoUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome Completo"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:layout_marginTop="30dp"/>
+
+</LinearLayout>
