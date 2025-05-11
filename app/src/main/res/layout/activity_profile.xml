@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
-
-
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/post"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:id="@+id/alterarFoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Alterar Foto"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/nomeUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome de Usuario(publico)"
+        android:hint="Nome de Usuario (publico)"
         android:inputType="textEmailAddress"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal" />  <!-- Centraliza horizontalmente -->
 
     <EditText
         android:id="@+id/nomeCompletoUsuario"
@@ -29,13 +36,15 @@
         android:hint="Nome Completo"
         android:inputType="textPassword"
         android:padding="10dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal" />  <!-- Centraliza horizontalmente -->
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Salvar"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal" />  <!-- Centraliza horizontalmente -->
 
 </LinearLayout>
