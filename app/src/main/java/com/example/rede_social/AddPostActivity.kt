@@ -14,6 +14,7 @@ import com.example.rede_social.adapter.Base64Converter
 import com.example.rede_social.adapter.LocalizacaoHelper
 import com.example.rede_social.databinding.ActivityAddPostBinding
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import java.io.IOException
@@ -101,11 +102,13 @@ class AddPostActivity : AppCompatActivity(), LocalizacaoHelper.Callback {
             val fotoPost = Base64Converter.drawableToString(
                 binding.imagePreview.drawable
             )
+            val dataCriacao = Timestamp.now()
             val db = Firebase.firestore
             val dados = hashMapOf(
                 "descricao" to descricao,
                 "fotoPost" to fotoPost,
-                "endereco" to endereco
+                "endereco" to endereco,
+                "dataCriacao" to dataCriacao
             )
             db.collection("posts")
                 .add(dados)

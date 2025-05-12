@@ -1,8 +1,9 @@
 package com.example.rede_social.model
 
 import android.graphics.Bitmap
+import java.util.Date
 
-class Post (private val descricao: String, private val foto: Bitmap, private val endereco: String){
+class Post (private val descricao: String, private val foto: Bitmap, private val endereco: String, private val dataCriacao: Date?){
     public fun getDescricao() : String{
         return descricao
     }
@@ -12,6 +13,10 @@ class Post (private val descricao: String, private val foto: Bitmap, private val
 
     public fun geEndereco() : String{
         return endereco
+    }
+
+    public fun getDataCriacao() : Date?{
+        return dataCriacao
     }
 }
 

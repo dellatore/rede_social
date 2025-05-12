@@ -60,7 +60,8 @@ class HomeActivity: AppCompatActivity() {
                         val bitmap = Base64Converter.stringToBitmap(imageString)
                         val descricao = doc.data!!["descricao"].toString()
                         val endereco = doc.data!!["endereco"].toString()
-                        Post(descricao, bitmap,endereco)
+                        val dataCriacao= doc.getTimestamp("dataCriacao")
+                        Post(descricao, bitmap,endereco,dataCriacao?.toDate())
                     } catch (e: Exception) {
                         null
                     }
@@ -78,34 +79,37 @@ class HomeActivity: AppCompatActivity() {
         binding.buttonLoadMore.setOnClickListener {
             var ultimoTimestamp: Timestamp? = null
             val db = Firebase.firestore
-            fun carregarLogs() {
-                var query = db.collection("logs")
-                    .orderBy("data", Query.Direction.DESCENDING)
-                    .limit(5)
-                if (ultimoTimestamp != null) {
-                    query = query.startAfter(ultimoTimestamp!!)
-                }
-                query.get()
-                    .addOnSuccessListener { result ->
-                        if (!result.isEmpty) {
-                            ultimoTimestamp =
-                                result.documents.last().getTimestamp("data")
-                            val posts = result.documents.mapNotNull { doc ->
-                                try {
-                                    val imageString = doc.data!!["fotoPost"].toString()
-                                    val bitmap = Base64Converter.stringToBitmap(imageString)
-                                    val descricao = doc.data!!["descricao"].toString()
-                                    val endereco = doc.data!!["endereco"].toString()
-                                    Post(descricao, bitmap,endereco)
-                                } catch (e: Exception) {
-                                    null
-                                }
-                            }
-                            val adapter = PostAdapter(posts.toTypedArray())
-                        }
-
-                    }
+            var query = db.collection("posts")
+                .orderBy("dataCriacao", Query.Direction.DESCENDING)
+                .limit(5)
+            if (ultimoTimestamp != null) {
+                query = query.startAfter(ultimoTimestamp!!)
             }
+            query.get()
+                .addOnSuccessListener { result ->
+                    if (!result.isEmpty) {
+                        ultimoTimestamp =
+                            result.documents.last().getTimestamp("dataCriacao")
+                        val posts = result.documents.mapNotNull { doc ->
+                            try {
+                                val imageString = doc.data!!["fotoPost"].toString()
+                                val bitmap = Base64Converter.stringToBitmap(imageString)
+                                val descricao = doc.data!!["descricao"].toString()
+                                val endereco = doc.data!!["endereco"].toString()
+                                val dataCriacao= doc.getTimestamp("dataCriacao")
+                                Post(descricao, bitmap,endereco,dataCriacao?.toDate())
+
+                            } catch (e: Exception) {
+                                null
+                            }
+                        }
+                        val adapter = PostAdapter(posts.toTypedArray())
+                        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+                        binding.recyclerView.adapter = adapter
+                    }
+
+                }
+
         }
 
         binding.buttonEditProfile.setOnClickListener {
