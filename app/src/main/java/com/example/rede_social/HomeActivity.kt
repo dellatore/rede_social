@@ -2,18 +2,18 @@ package com.example.rede_social
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rede_social.adapter.Base64Converter
 import com.example.rede_social.adapter.PostAdapter
 import com.example.rede_social.databinding.ActivityHomeBinding
-import com.example.rede_social.databinding.ActivityLoginBinding
 import com.example.rede_social.model.Post
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 
 class HomeActivity: AppCompatActivity() {
@@ -46,7 +46,7 @@ class HomeActivity: AppCompatActivity() {
             } else {
                 db.collection("posts")
             }
-            query = query.limit(PAGE_SIZE.toLong()) // ordene por algum campo indexado
+            query = query.limit(PAGE_SIZE.toLong())
 
             query.get().addOnSuccessListener { result ->
 
@@ -76,43 +76,35 @@ class HomeActivity: AppCompatActivity() {
 
 
         binding.buttonLoadMore.setOnClickListener {
-            if (lastVisibleDocument == null) {
-                Toast.makeText(this, "Nenhum post para carregar", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
+            var ultimoTimestamp: Timestamp? = null
             val db = Firebase.firestore
-            val cidadeFiltro = binding.editFiltroCidade.text.toString().trim()
-            val collection = db.collection("posts")
-            var query = if (cidadeFiltro.isNotEmpty()) {
-                collection.whereEqualTo("endereco", cidadeFiltro)
-            } else {
-                collection
-            }
-
-            query = query.orderBy("descricao")
-                .startAfter(lastVisibleDocument!!)
-                .limit(PAGE_SIZE.toLong())
-
-            query.get().addOnSuccessListener { result ->
-                if (!result.isEmpty) {
-                    lastVisibleDocument = result.documents.last()
+            fun carregarLogs() {
+                var query = db.collection("logs")
+                    .orderBy("data", Query.Direction.DESCENDING)
+                    .limit(5)
+                if (ultimoTimestamp != null) {
+                    query = query.startAfter(ultimoTimestamp!!)
                 }
+                query.get()
+                    .addOnSuccessListener { result ->
+                        if (!result.isEmpty) {
+                            ultimoTimestamp =
+                                result.documents.last().getTimestamp("data")
+                            val posts = result.documents.mapNotNull { doc ->
+                                try {
+                                    val imageString = doc.data!!["fotoPost"].toString()
+                                    val bitmap = Base64Converter.stringToBitmap(imageString)
+                                    val descricao = doc.data!!["descricao"].toString()
+                                    val endereco = doc.data!!["endereco"].toString()
+                                    Post(descricao, bitmap,endereco)
+                                } catch (e: Exception) {
+                                    null
+                                }
+                            }
+                            val adapter = PostAdapter(posts.toTypedArray())
+                        }
 
-                val newPosts = result.documents.mapNotNull { doc ->
-                    try {
-                        val imageString = doc.getString("fotoPost") ?: return@mapNotNull null
-                        val descricao = doc.getString("descricao") ?: ""
-                        val endereco = doc.getString("endereco") ?: ""
-                        val bitmap = Base64Converter.stringToBitmap(imageString)
-                        Post(descricao, bitmap, endereco)
-                    } catch (e: Exception) {
-                        null
                     }
-                }
-
-                val adapter = binding.recyclerView.adapter as PostAdapter
-                adapter.addPosts(newPosts) // Você precisará adicionar esse método no PostAdapter
             }
         }
 

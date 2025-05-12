@@ -67,9 +67,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginTop="16dp"
-            >
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp">
 
             <Button
                 android:id="@+id/buttonEditProfile"
@@ -84,6 +84,8 @@
                 android:text="Sair"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
+
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@
         android:layout_height="120dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground"/>
+        android:src="@drawable/post"/>
 
     <Button
         android:id="@+id/buttonSelectImage"

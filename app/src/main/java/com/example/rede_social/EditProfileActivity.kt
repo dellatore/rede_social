@@ -1,7 +1,5 @@
 package com.example.rede_social
 
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -9,6 +7,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rede_social.adapter.Base64Converter
 import com.example.rede_social.databinding.ActivityEditProfileBinding
@@ -83,7 +83,7 @@ class EditProfileActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { doc ->
                     if (doc.exists()) {
-                        binding.editNome.setText(doc.getString("nome") ?: "")
+                        binding.editNome.setText(doc.getString("nomeCompleto") ?: "")
                         binding.editEmail.setText(doc.getString("email") ?: "")
                         val fotoBase64 = doc.getString("fotoPerfil")
                         if (!fotoBase64.isNullOrEmpty()) {
